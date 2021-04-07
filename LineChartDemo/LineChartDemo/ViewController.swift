@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import Charts
 
 class ViewController: UIViewController {
-
+    var tableView = UITableView();
+    
+    var lineChart = LineChartView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
     }
 
 
