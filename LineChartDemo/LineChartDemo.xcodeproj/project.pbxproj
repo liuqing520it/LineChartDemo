@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		453049364B4688A4054C8C9D /* Pods_LineChartDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B72511362AD2EDA2B3B5AA /* Pods_LineChartDemo.framework */; };
+		49477A9B261E8D140084CEB0 /* LQSliderIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49477A9A261E8D140084CEB0 /* LQSliderIndicator.swift */; };
+		49477A9E261E8D680084CEB0 /* LQSliderIndicatorChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49477A9D261E8D680084CEB0 /* LQSliderIndicatorChip.swift */; };
 		49712DE0261C6DC80084A872 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49712DDF261C6DC80084A872 /* AppDelegate.swift */; };
 		49712DE2261C6DC80084A872 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49712DE1261C6DC80084A872 /* SceneDelegate.swift */; };
 		49712DE4261C6DC80084A872 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49712DE3261C6DC80084A872 /* ViewController.swift */; };
@@ -20,6 +22,8 @@
 /* Begin PBXFileReference section */
 		31DC1B65A2FA042418C86886 /* Pods-LineChartDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LineChartDemo.release.xcconfig"; path = "Target Support Files/Pods-LineChartDemo/Pods-LineChartDemo.release.xcconfig"; sourceTree = "<group>"; };
 		41B72511362AD2EDA2B3B5AA /* Pods_LineChartDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LineChartDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49477A9A261E8D140084CEB0 /* LQSliderIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LQSliderIndicator.swift; sourceTree = "<group>"; };
+		49477A9D261E8D680084CEB0 /* LQSliderIndicatorChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LQSliderIndicatorChip.swift; sourceTree = "<group>"; };
 		49712DDC261C6DC80084A872 /* LineChartDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LineChartDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49712DDF261C6DC80084A872 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49712DE1261C6DC80084A872 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 			isa = PBXGroup;
 			children = (
 				49712DF9261D454B0084A872 /* LQSlider.swift */,
+				49477A9A261E8D140084CEB0 /* LQSliderIndicator.swift */,
+				49477A9D261E8D680084CEB0 /* LQSliderIndicatorChip.swift */,
 			);
 			path = Slider;
 			sourceTree = "<group>";
@@ -217,8 +223,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				49712DE4261C6DC80084A872 /* ViewController.swift in Sources */,
+				49477A9E261E8D680084CEB0 /* LQSliderIndicatorChip.swift in Sources */,
 				49712DFA261D454B0084A872 /* LQSlider.swift in Sources */,
 				49712DE0261C6DC80084A872 /* AppDelegate.swift in Sources */,
+				49477A9B261E8D140084CEB0 /* LQSliderIndicator.swift in Sources */,
 				49712DE2261C6DC80084A872 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
