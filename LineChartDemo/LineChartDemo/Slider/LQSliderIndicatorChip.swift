@@ -45,10 +45,10 @@ class LQSliderIndicatorChip: UIView {
         label!.numberOfLines = 2
         label!.textAlignment = .center
         addSubview(label!)
-        let dispatchTime: DispatchTime = DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute:{
-            
-        })
+//        let dispatchTime: DispatchTime = DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+//        DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute:{
+//
+//        })
     }
     
     func relayUI() {
@@ -56,11 +56,24 @@ class LQSliderIndicatorChip: UIView {
             switch(self.status){
             case .Idle:
                 self.configLabelText(text: self.string)
+                let originY = self.label!.frame.origin.y
+                self.label!.frame.origin.y = originY + 12.0;
                 break
             case .Normal:
 //                self.label?.frame.
+                UIView.animate(withDuration: self.duration) {
+                    self.configLabelText(text: self.dateString)
+                    let originY = self.label!.frame.origin.y
+                    self.label!.frame.origin.y = originY + 12.0;
+                };
                 break
-            default
+            case .Scale:
+                UIView.animate(withDuration: self.duration) {
+                    self.configLabelText(text: self.string)
+                    
+                    let originY = self.label!.frame.origin.y
+                    self.label!.frame.origin.y = originY + 24.0;
+                };
                 break
             }
         }
