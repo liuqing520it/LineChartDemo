@@ -31,7 +31,7 @@ class LQSliderIndicatorChip: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        createUI()
     }
     
     required init?(coder: NSCoder) {
@@ -39,16 +39,12 @@ class LQSliderIndicatorChip: UIView {
     }
     
     func createUI() -> Void {
-        label = UILabel.init();
-        label!.textColor = UIColor.lightText;
+        label = UILabel.init(frame: frame);
+        label!.textColor = UIColor.red;
         label!.font = UIFont.systemFont(ofSize: 12)
         label!.numberOfLines = 2
         label!.textAlignment = .center
         addSubview(label!)
-//        let dispatchTime: DispatchTime = DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-//        DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute:{
-//
-//        })
     }
     
     func relayUI() {
@@ -60,7 +56,8 @@ class LQSliderIndicatorChip: UIView {
                 self.label!.frame.origin.y = originY + 12.0;
                 break
             case .Normal:
-//                self.label?.frame.
+                let originY = self.label!.frame.origin.y
+                self.label!.frame.origin.y = originY + 12.0;
                 UIView.animate(withDuration: self.duration) {
                     self.configLabelText(text: self.dateString)
                     let originY = self.label!.frame.origin.y
@@ -70,7 +67,6 @@ class LQSliderIndicatorChip: UIView {
             case .Scale:
                 UIView.animate(withDuration: self.duration) {
                     self.configLabelText(text: self.string)
-                    
                     let originY = self.label!.frame.origin.y
                     self.label!.frame.origin.y = originY + 24.0;
                 };

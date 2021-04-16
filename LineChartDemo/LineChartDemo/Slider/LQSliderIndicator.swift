@@ -19,9 +19,13 @@ class LQSliderIndicator: UIView {
     open var chipOffX : CGFloat = 0.0{
         didSet{
             if chipViews.count > 0 {
-                let chipView : LQSliderIndicatorChip = chipViews[0]
-                let offX = chipOffX - chipView.frame.width * 0.5
+                let offX: CGFloat = 15
                 ///布局子视图
+                for index in 0..<chipViews.count {
+                    let chipView = chipViews[index]
+                    chipView.frame = CGRect.init(x: offX + chipView.frame.width * CGFloat(index), y: 0, width: chipView.frame.width, height: chipView.frame.height)
+                }
+                
             }
         }
     }
@@ -37,9 +41,10 @@ class LQSliderIndicator: UIView {
     private var strings: [String] = []
 
     convenience init(frame: CGRect, strings:[String]) {
-        self.init()
+        self.init(frame: frame)
         self.strings = strings;
-        
+        initParams()
+        createUI()
     }
     
     func initParams() -> Void {
@@ -47,7 +52,7 @@ class LQSliderIndicator: UIView {
         toCircleCenterYDistance = 0
         circleCenter = CGPoint.init(x: circleCenterX, y: self.frame.size.height + toCircleCenterYDistance)
         y0 = circleCenter.y - toCircleCenterYDistance
-        
+        generateChips()
     }
     
     func generateChips() -> Void {
@@ -55,7 +60,7 @@ class LQSliderIndicator: UIView {
         if strings.count == 0 {
             return
         }
-        let stringWidth : CGFloat = 35
+        let stringWidth : CGFloat = (frame.width - 30) / CGFloat(strings.count)
         for i in 0..<strings.count {
             let tempStr = strings[i]
             let chipView : LQSliderIndicatorChip = LQSliderIndicatorChip.init(frame: CGRect.init(x: 0, y: 0, width: stringWidth, height: self.frame.size.height))
@@ -69,7 +74,6 @@ class LQSliderIndicator: UIView {
             addSubview(chipView)
             chipViews.append(chipView)
         }
-//        self.chipOffX = chipOffX
     }
     
     func createUI(){
@@ -141,7 +145,7 @@ class LQSliderIndicator: UIView {
     func relayUI() -> Void {
         path = generatePath()
         maskLayer?.path = path?.cgPath
-        
+        findNearstChipViewAndScale()
     }
     
     func findNearstChipViewAndScale() -> Void {
