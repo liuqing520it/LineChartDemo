@@ -43,7 +43,7 @@ public class LQSlider: UIControl {
     open var poleImageV: UIImageView?
     open var thumbImageV: UIImageView?
     
-    private var thumbImageVWidth: CGFloat = 0
+    private var thumbImageVWidth: CGFloat = 22.0
     private var animationTotalDuring: CGFloat = 0.6
     private var animationMinDuring: CGFloat = 0.2
     private var displayLink: CADisplayLink?
@@ -62,13 +62,14 @@ public class LQSlider: UIControl {
     }
     
     func createUI() -> Void {
-        poleImageV = UIImageView.init(frame: CGRect.init(x: poleImageVOffX, y:self.frame.maxY - 15, width: self.frame.width - 2 * poleImageVOffX, height: 0.5))
-        poleImageV?.backgroundColor = UIColor.white
+        poleImageV = UIImageView.init(frame: CGRect.init(x: poleImageVOffX, y:self.frame.height - 15, width: self.frame.width - 2 * poleImageVOffX, height: 0.5))
+        poleImageV?.backgroundColor = UIColor.red
         addSubview(poleImageV!)
         
         thumbImageV = UIImageView.init(frame: CGRect.init(x: 10, y: 0, width: thumbImageVWidth, height: thumbImageVWidth))
-        thumbImageV?.backgroundColor = UIColor.white
+        thumbImageV?.backgroundColor = UIColor.green
         thumbImageV?.layer.cornerRadius = thumbImageVWidth * 0.5
+        thumbImageV?.isUserInteractionEnabled = true
         addSubview(thumbImageV!)
         thumbImageV?.center.y = poleImageV!.center.y;
         
@@ -76,10 +77,11 @@ public class LQSlider: UIControl {
         thumbImageV!.addGestureRecognizer(panGR);
         let tapGR = UITapGestureRecognizer.init(target: self, action: #selector(panGREvent))
         self.addGestureRecognizer(tapGR);
-        
+        relayThumbImagV();
     }
     
     @objc func panGREvent(GR: UIPanGestureRecognizer){
+        print("\npan gesture come on\n")
         var point = GR.location(in: poleImageV)
         caculateWithPoint(point: &point);
         relayThumbImagV()

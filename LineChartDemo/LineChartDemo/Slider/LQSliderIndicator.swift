@@ -48,8 +48,6 @@ class LQSliderIndicator: UIView {
     }
     
     func initParams() -> Void {
-        rr = 11
-        toCircleCenterYDistance = 0
         circleCenter = CGPoint.init(x: circleCenterX, y: self.frame.size.height + toCircleCenterYDistance)
         y0 = circleCenter.y - toCircleCenterYDistance
         generateChips()

@@ -28,42 +28,32 @@ class ViewController: UIViewController {
     }
     
     func createUI() -> Void {
-        chartMoveDashLine = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 1, height: 250))
+        chartMoveDashLine = UIView.init(frame: CGRect.init(x: 0, y: 64, width: 1, height: 250))
         chartMoveDashLine.backgroundColor = .red
+        view.addSubview(chartMoveDashLine)
         
+        lineChart.frame = CGRect.init(x: 0, y: 64, width: view.frame.width, height: 250)
         view.addSubview(lineChart)
-        lineChart.snp.makeConstraints { (make) in
-            make.left.right.equalTo(view)
-            make.top.equalTo(view).offset(64)
-            make.height.equalTo(250)
-        }
+
         let strings = ["周一","周二","周三","周四","周五","周六","周天"]
-        sliderIndicator = LQSliderIndicator.init(frame: CGRect.init(x: 0, y: 330, width: self.view.frame.width, height: 50), strings: strings)
-        sliderIndicator?.chipOffX = 25
-        sliderIndicator?.backgroundColor = .red
+        sliderIndicator = LQSliderIndicator.init(frame: CGRect.init(x: 30, y: 330, width: view.frame.width - 60, height: 50), strings: strings)
+        sliderIndicator?.chipOffX = 30
+        sliderIndicator?.backgroundColor = .green
+        sliderIndicator?.backgroundColor = .purple
         view.addSubview(sliderIndicator!)
-        sliderIndicator?.snp.makeConstraints({ (make) in
-            make.left.right.equalTo(view)
-            make.top.equalTo(lineChart.snp.bottom)
-            make.size.equalTo(CGSize.init(width: view.frame.width, height: 50))
-        })
+        
         let sliderHeight = (sliderIndicator?.frame.height ?? 0) * 0.5
-        sliderView = LQSlider.init(frame: CGRect.init(x: sliderIndicator!.frame.minX, y: 0, width: view.frame.width, height: sliderHeight))
+        sliderView = LQSlider.init(frame: CGRect.init(x: sliderIndicator!.frame.minX, y: sliderIndicator!.frame.maxY - 15, width: sliderIndicator!.frame.width, height: sliderHeight))
         sliderView.delegate = self
         sliderView.minimumValue = 0
         sliderView.maximumValue = 7
         sliderView.value = CGFloat(self.currentIndex)
-        sliderView.poleImageVOffX = 25
+        sliderView.poleImageVOffX = 20
         view.addSubview(sliderView)
-        sliderView.snp.makeConstraints { (make) in
-            make.left.right.equalTo(view)
-            make.top.equalTo(sliderIndicator!.snp.bottom)
-            make.height.equalTo(sliderHeight)
-        }
         
         thumbImageVDidSlided(slider: sliderView)
         sliderIndicator!.rr = sliderView.thumbImageV!.frame.width * 0.5
-        sliderIndicator!.toCircleCenterYDistance = sliderView.frame.origin.y + sliderView.frame.height * 0.5 - sliderIndicator!.frame.maxY
+        sliderIndicator!.toCircleCenterYDistance = 30
     }
     
     func configChartViewProps() -> Void {
@@ -185,10 +175,12 @@ extension ViewController : ChartViewDelegate, LQSliderDelegate{
     }
     
     func sliderDidEndSlider(slider: LQSlider, centerX: CGFloat) {
-        let chipView = sliderIndicator?.getChipViewWithCircleCenterX(centerX: centerX)
-        slider.thumbImageV?.center.x = chipView?.center.x ?? 0
-        sliderIndicator?.circleCenterX = chipView?.center.x ?? 0
-        let chipViewInArrayIndex = sliderIndicator?.chipViews.firstIndex(of: chipView!)
+        guard let chipView = sliderIndicator?.getChipViewWithCircleCenterX(centerX: centerX) else {
+            return
+        }
+        slider.thumbImageV?.center.x = chipView.center.x
+        sliderIndicator?.circleCenterX = chipView.center.x
+        let chipViewInArrayIndex = sliderIndicator?.chipViews.firstIndex(of: chipView)
         changeChartLinePointImage(index: chipViewInArrayIndex ?? 0)
         let equalParts = lineChart.frame.width / 9
         let centerResult = equalParts * CGFloat((chipViewInArrayIndex! + 1)) + 15.0
@@ -198,7 +190,7 @@ extension ViewController : ChartViewDelegate, LQSliderDelegate{
     
     func thumbImageVDidSlided(slider: LQSlider) {
         var presentationLayer = slider.thumbImageV!.layer.presentation()
-        if presentationLayer != nil {
+        if presentationLayer == nil {
             presentationLayer = slider.thumbImageV!.layer
         }
         let thumbImageVCenter = presentationLayer?.position ?? CGPoint.zero
