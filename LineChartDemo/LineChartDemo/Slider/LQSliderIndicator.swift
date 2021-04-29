@@ -163,26 +163,26 @@ class LQSliderIndicator: UIView {
     }
     
     public func getChipViewWithCircleCenterX(centerX: CGFloat) -> LQSliderIndicatorChip?{
-        var minValue : CGFloat = 0;
+        var minValue : NSNumber?;
         var nearestChipView :LQSliderIndicatorChip? = nil
         for chipView in chipViews {
-            let resultValue: CGFloat = absValue(value1: chipView.center.x, value2: centerX)
-            if minValue == 0 {
-                minValue = resultValue
+            let resultValue: Float = absValue(value1: Float(chipView.center.x), value2: Float(centerX))
+            if minValue == nil {
+                minValue = NSNumber(value: resultValue)
             }
-            if nearestChipView != nil {
+            if nearestChipView == nil {
                 nearestChipView = chipView
             }
-            if resultValue < minValue {
-                minValue = resultValue
+            if resultValue < minValue?.floatValue ?? 0 {
+                minValue = NSNumber(value: resultValue)
                 nearestChipView = chipView
             }
         }
         return nearestChipView
     }
   
-    func absValue(value1: CGFloat, value2: CGFloat) -> CGFloat {
-        var resultValue :CGFloat = 0.0
+    func absValue(value1: Float, value2: Float) -> Float {
+        var resultValue :Float = 0.0
         if value1 > value2 {
             resultValue = value1 - value2
         }else{

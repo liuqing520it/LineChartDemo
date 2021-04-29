@@ -18,10 +18,6 @@ class LQSliderIndicatorChip: UIView {
     open var string: String = ""
     open var status: CRSliderIndicatorChipStatus = CRSliderIndicatorChipStatus.Idle {
         didSet {
-            if(oldValue == status){
-                return
-            }
-            status = oldValue
             relayUI()
         }
     }
@@ -52,23 +48,18 @@ class LQSliderIndicatorChip: UIView {
             switch(self.status){
             case .Idle:
                 self.configLabelText(text: self.string)
-                let originY = self.label!.frame.origin.y
-                self.label!.frame.origin.y = originY + 12.0;
+                self.label?.transform = .identity
                 break
             case .Normal:
-                let originY = self.label!.frame.origin.y
-                self.label!.frame.origin.y = originY + 12.0;
                 UIView.animate(withDuration: self.duration) {
-                    self.configLabelText(text: self.dateString)
-                    let originY = self.label!.frame.origin.y
-                    self.label!.frame.origin.y = originY + 12.0;
+                    self.configLabelText(text: self.string)
+                    self.resetLabelDistance(distance: 12.0)
                 };
                 break
             case .Scale:
                 UIView.animate(withDuration: self.duration) {
-                    self.configLabelText(text: self.string)
-                    let originY = self.label!.frame.origin.y
-                    self.label!.frame.origin.y = originY + 24.0;
+                    self.configLabelText(text: self.dateString)
+                    self.resetLabelDistance(distance: 24)
                 };
                 break
             }
@@ -83,4 +74,11 @@ class LQSliderIndicatorChip: UIView {
         label!.textAlignment = .center
     }
 
+    func resetLabelDistance(distance: CGFloat) {
+        var tempRect = self.label!.frame;
+        let destinationView = self.label!.superview;
+        tempRect.origin.y = destinationView!.frame.height - self.label!.frame.height - distance;
+        self.label!.frame = tempRect;
+        self.label?.center = CGPoint.init(x: destinationView!.frame.width * 0.5, y: self.label!.center.y);
+    }
 }

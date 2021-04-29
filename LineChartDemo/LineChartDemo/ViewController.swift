@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     lazy var lineChart = LineChartView()
     lazy var sliderView = LQSlider()
     lazy var chartDataSource:[String] = []
+    var leftMarginSpace: CGFloat = 30
+    
     var currentIndex : NSInteger = 0
     var chartMoveDashLine:UIView = UIView()
     
@@ -24,7 +26,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         configChartViewProps()
         createUI()
-        configChartViewData()
     }
     
     func createUI() -> Void {
@@ -34,10 +35,11 @@ class ViewController: UIViewController {
         
         lineChart.frame = CGRect.init(x: 0, y: 64, width: view.frame.width, height: 250)
         view.addSubview(lineChart)
-
-        let strings = ["周一","周二","周三","周四","周五","周六","周天"]
-        sliderIndicator = LQSliderIndicator.init(frame: CGRect.init(x: 30, y: 330, width: view.frame.width - 60, height: 50), strings: strings)
-        sliderIndicator?.chipOffX = 30
+        configChartViewData()
+        
+        let strings = ["4/26\n周一","4/27\n周二","4/28\n周三","4/29\n周四","4/30\n周五","5/1\n周六","5/2\n周天"]
+        sliderIndicator = LQSliderIndicator.init(frame: CGRect.init(x: leftMarginSpace, y: 330, width: view.frame.width - 60, height: 50), strings: strings)
+        sliderIndicator?.chipOffX = leftMarginSpace
         sliderIndicator?.backgroundColor = .green
         sliderIndicator?.backgroundColor = .purple
         view.addSubview(sliderIndicator!)
@@ -53,7 +55,23 @@ class ViewController: UIViewController {
         
         thumbImageVDidSlided(slider: sliderView)
         sliderIndicator!.rr = sliderView.thumbImageV!.frame.width * 0.5
-        sliderIndicator!.toCircleCenterYDistance = 30
+        sliderIndicator!.toCircleCenterYDistance = leftMarginSpace
+        
+        setMoveLineCenterXFristTime(slider: sliderView)
+    }
+    
+    func setMoveLineCenterXFristTime(slider: LQSlider) -> Void {
+        var presentationLayer = slider.thumbImageV!.layer.presentation()
+        if presentationLayer == nil {
+            presentationLayer = slider.thumbImageV!.layer
+        }
+        let thumbImageVCenter = presentationLayer?.position ?? CGPoint.zero
+        let centerX = thumbImageVCenter.x + leftMarginSpace
+        guard let hightlight = lineChart.getHighlightByTouchPoint(CGPoint.init(x: centerX, y: 0)) else {
+            return
+        }
+        chartMoveDashLine.center.x = hightlight.xPx + chartMoveDashLine.frame.width * 0.5
+        
     }
     
     func configChartViewProps() -> Void {
@@ -183,9 +201,9 @@ extension ViewController : ChartViewDelegate, LQSliderDelegate{
         let chipViewInArrayIndex = sliderIndicator?.chipViews.firstIndex(of: chipView)
         changeChartLinePointImage(index: chipViewInArrayIndex ?? 0)
         let equalParts = lineChart.frame.width / 9
-        let centerResult = equalParts * CGFloat((chipViewInArrayIndex! + 1)) + 15.0
+        let centerResult = equalParts * CGFloat((chipViewInArrayIndex! + 1)) + leftMarginSpace
         let hightlight = lineChart.getHighlightByTouchPoint(CGPoint.init(x: centerResult, y: 0))
-        chartMoveDashLine.center.x = hightlight!.xPx + 15 + chartMoveDashLine.frame.width * 0.5
+        chartMoveDashLine.center.x = hightlight!.xPx + chartMoveDashLine.frame.width * 0.5
     }
     
     func thumbImageVDidSlided(slider: LQSlider) {
@@ -195,9 +213,26 @@ extension ViewController : ChartViewDelegate, LQSliderDelegate{
         }
         let thumbImageVCenter = presentationLayer?.position ?? CGPoint.zero
         sliderIndicator?.circleCenterX = thumbImageVCenter.x
-        
-        chartMoveDashLine.center.x = CGFloat(thumbImageVCenter.x + 15.0)
+        chartMoveDashLine.center.x = CGFloat(thumbImageVCenter.x + leftMarginSpace)
+        getChartViewCurrentIndexByCenterX(centerX: thumbImageVCenter.x)
     }
+    
+    func getChartViewCurrentIndexByCenterX(centerX: CGFloat) -> Void {
+        let equalParts = lineChart.frame.width / 8.0
+        let indexFloat = (centerX + leftMarginSpace) / equalParts
+        
+        let formatter = NumberFormatter()
+        formatter.positiveFormat = "0"
+        let resultValue: NSString = formatter.string(from: NSNumber(value: Float( indexFloat)))! as NSString
+        
+        let currentIndex = Int(resultValue.floatValue)
+        if fabsf(Float(currentIndex) - Float(indexFloat)) < 0.5 {
+            changeChartLinePointImage(index: currentIndex - 1)
+            self.currentIndex = currentIndex
+        }
+        
+    }
+    
     
 }
 

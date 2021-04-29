@@ -32,7 +32,7 @@ public class LQSlider: UIControl {
             self.sendActions(for: UIControl.Event.valueChanged)
         }
     }
-    open var minimumValue: CGFloat = 0.5
+    open var minimumValue: CGFloat = 1
     open var maximumValue: CGFloat = 7
     open var poleImageVOffX: CGFloat = 0{
         didSet{
@@ -49,7 +49,7 @@ public class LQSlider: UIControl {
     private var displayLink: CADisplayLink?
     
     func initProps() -> Void {
-        poleImageVOffX = self.frame.width * 0.5;
+        poleImageVOffX = self.frame.width * 0.1;
         displayLink = CADisplayLink.init(target: self, selector: #selector(thumbImageVHaveSlided))
         displayLink?.add(to: RunLoop.current, forMode: RunLoop.Mode.default)
         displayLink?.isPaused = true
